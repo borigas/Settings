@@ -214,8 +214,6 @@ Import-Module posh-git
 $GitPromptSettings.WindowTitle = { param($GitStatus, [bool]$IsAdmin) "$(if ($GitStatus) {"$($GitStatus.RepoName) [$($GitStatus.Branch)]"} else {Get-PromptPath}) ~ $(if ($vsVersion) {"$vsVersion ~ "})PowerShell $($PSVersionTable.PSVersion) $([IntPtr]::Size * 8)-bit $(if ($IsAdmin) {'Admin'})" }
 Import-Module DockerCompletion
 
-Import-Module z
-
 ### PSReadLine customizations. https://github.com/PowerShell/PSReadLine/blob/master/PSReadLine/SamplePSReadLineProfile.ps1#L13-L21
 # Turn on history
 Set-PSReadLineOption -PredictionSource History
@@ -298,3 +296,6 @@ $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
 }
+
+# Import z after changing our initial directory to avoid writing to ~\.cdhistory from multiple concurrent PS starts
+Import-Module z
