@@ -1,48 +1,59 @@
 #!/bin/bash
 
-linuxSettingsDir=/mnt/e/Settings/Linux
-windowsUserDir=$(wslpath $(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d '\r'))
+settingsDir=/mnt/e/Settings
+if command -v cmd.exe >/dev/null 2>&1; then
+    echo "cmd.exe exists. Assuming we're running in WSL"
+    windowsUserDir=$(wslpath $(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d '\r'))
+else
+    echo "cmd.exe does not exist. Assuming we're running in a non-WSL environment"
+fi
 
 scripts=(
-    "$linuxSettingsDir/Installers/zsh.sh"
+    "$settingsDir/Linux/Installers/zsh.sh"
 
-    "$linuxSettingsDir/Installers/pwsh.sh"
+    "$settingsDir/Linux/Installers/pwsh.sh"
 
-    "$linuxSettingsDir/Installers/kubectl.sh"
-    "$linuxSettingsDir/Installers/kubent.sh"
-    "$linuxSettingsDir/Installers/krew.sh"
-    "$linuxSettingsDir/Installers/kubectx.sh"
-    "$linuxSettingsDir/Installers/helm.sh"
+    "$settingsDir/Linux/Installers/kubectl.sh"
+    "$settingsDir/Linux/Installers/kubent.sh"
+    "$settingsDir/Linux/Installers/krew.sh"
+    "$settingsDir/Linux/Installers/kubectx.sh"
+    "$settingsDir/Linux/Installers/helm.sh"
 )
 
 # Map path for profile sharing
 if [ ! -e ~/profile ]; then
     echo "Linking ~/profile"
-    ln -s $linuxSettingsDir/Profile/ ~/profile
+    ln -s $settingsDir/Linux/Profile/ ~/profile
 else
     echo "~/profile already exists"
 fi
 
-# Map path for k8s config sharing
-kubePath="$windowsUserDir/.kube/"
-if [ ! -e ~/.kube ]; then
-    echo "Linking $kubePath to ~/.kube"
-    ln -s $kubePath ~/.kube
-else
-    echo "~/.kube already exists"
-fi
+if [[ -v windowsUserDir ]]; then
+    echo "Using Windows user directory: $windowsUserDir"
 
-# Map path for Azure config sharing
-azurePath="$windowsUserDir/.azure/"
-if [ ! -e ~/.azure ]; then
-    echo "Linking $azurePath to ~/.azure"
-    ln -s $azurePath ~/.azure
+    # Map path for k8s config sharing
+    kubePath="$windowsUserDir/.kube/"
+    if [ ! -e ~/.kube ]; then
+        echo "Linking $kubePath to ~/.kube"
+        ln -s $kubePath ~/.kube
+    else
+        echo "~/.kube already exists"
+    fi
+
+    # Map path for Azure config sharing
+    azurePath="$windowsUserDir/.azure/"
+    if [ ! -e ~/.azure ]; then
+        echo "Linking $azurePath to ~/.azure"
+        ln -s $azurePath ~/.azure
+    else
+        echo "~/.azure already exists"
+    fi
 else
-    echo "~/.azure already exists"
+    echo "Windows user directory not set. Not linking context dirs between OSes."
 fi
 
 # Map path for Git config sharing
-gitPath="$windowsUserDir/.gitconfig"
+gitPath="$settingsDir/Git/.gitconfig"
 if [ ! -e ~/.gitconfig ]; then
     echo "Linking $gitPath to ~/.gitconfig"
     ln -s $gitPath ~/.gitconfig
