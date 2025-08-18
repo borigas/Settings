@@ -1,15 +1,28 @@
 #!/bin/bash
 
+linuxSettingsDir=/mnt/e/Settings/Linux
+windowsUserDir=$(wslpath $(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d '\r'))
+
+scripts=(
+    "$linuxSettingsDir/Installers/zsh.sh"
+
+    "$linuxSettingsDir/Installers/kubectl.sh"
+    "$linuxSettingsDir/Installers/kubent.sh"
+    "$linuxSettingsDir/Installers/krew.sh"
+    "$linuxSettingsDir/Installers/kubectx.sh"
+    "$linuxSettingsDir/Installers/helm.sh"
+)
+
 # Map path for profile sharing
 if [ ! -e ~/profile ]; then
     echo "Linking ~/profile"
-    ln -s /mnt/c/workspaces/Settings/Linux/Profile/ ~/profile
+    ln -s $linuxSettingsDir/Profile/ ~/profile
 else
     echo "~/profile already exists"
 fi
 
 # Map path for k8s config sharing
-kubePath="$( wslpath $(wslvar USERPROFILE))/.kube/"
+kubePath="$windowsUserDir/.kube/"
 if [ ! -e ~/.kube ]; then
     echo "Linking $kubePath to ~/.kube"
     ln -s $kubePath ~/.kube
@@ -18,7 +31,7 @@ else
 fi
 
 # Map path for Azure config sharing
-azurePath="$( wslpath $(wslvar USERPROFILE))/.azure/"
+azurePath="$windowsUserDir/.azure/"
 if [ ! -e ~/.azure ]; then
     echo "Linking $azurePath to ~/.azure"
     ln -s $azurePath ~/.azure
@@ -27,7 +40,7 @@ else
 fi
 
 # Map path for Git config sharing
-gitPath="$( wslpath $(wslvar USERPROFILE))/.gitconfig"
+gitPath="$windowsUserDir/.gitconfig"
 if [ ! -e ~/.gitconfig ]; then
     echo "Linking $gitPath to ~/.gitconfig"
     ln -s $gitPath ~/.gitconfig
@@ -35,14 +48,12 @@ else
     echo "~/.gitconfig already exists"
 fi
 
-
-
-# TODO Make sure profile.sh is included in .bashrc
+# Make sure profile.sh is included in .bashrc
 syncedProfilePath="~/profile/profile.sh"
 profilePath=~/.profile
 if [ -z "$(grep "$syncedProfilePath" $profilePath)" ]; then
     echo "Appending $syncedProfilePath to $profilePath"
-    
+
     echo -en "\n" >> $profilePath
     echo -en "\n" >> $profilePath
     echo "####   My Synced Profile   ####" >> $profilePath
@@ -50,5 +61,26 @@ if [ -z "$(grep "$syncedProfilePath" $profilePath)" ]; then
 else
     echo "Profile already in $profilePath";
 fi
+
+confirm() {
+  local msg="${1:-Proceed?}"
+  while true; do
+    read -rp "$msg [y/n]: " reply
+    case "$reply" in
+      [yY]) return 0 ;;
+      [nN]) return 1 ;;
+      *) echo "Please enter 'y' or 'n'." ;;
+    esac
+  done
+}
+
+for script in "${scripts[@]}"; do
+  if confirm "Run '$script'?"; then
+    echo "==> Running: $script"
+    bash "$script"
+  else
+    echo "Skipping: $script"
+  fi
+done
 
 echo "Done"
