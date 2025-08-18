@@ -10,6 +10,7 @@ fi
 
 scripts=(
     "$settingsDir/Linux/Installers/zsh.sh"
+    "$settingsDir/Linux/Installers/OhMyZsh.sh"
 
     "$settingsDir/Linux/Installers/pwsh.sh"
 
@@ -59,6 +60,15 @@ if [ ! -e ~/.gitconfig ]; then
     ln -s $gitPath ~/.gitconfig
 else
     echo "~/.gitconfig already exists"
+fi
+
+# Map path for Git config sharing
+zshrcPath="$settingsDir/Linux/Profile/.zshrc"
+if [ ! -e ~/.zshrc ]; then
+    echo "Linking $zshrcPath to ~/.zshrc"
+    ln -s $zshrcPath ~/.zshrc
+else
+    echo "~/.zshrc already exists"
 fi
 
 # Make sure profile.sh is included in .bashrc
