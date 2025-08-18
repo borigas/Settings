@@ -204,6 +204,8 @@ set-alias bdone gitBdoneWithWorkTreeSupport
 
 set-alias c clear
 
+Set-Alias grep Select-String
+
 function mongo {
     . "C:\MongoDb\bin\mongo.exe" --shell --host HV-Mongo01
 }
