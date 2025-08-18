@@ -6,6 +6,8 @@ windowsUserDir=$(wslpath $(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d '
 scripts=(
     "$linuxSettingsDir/Installers/zsh.sh"
 
+    "$linuxSettingsDir/Installers/pwsh.sh"
+
     "$linuxSettingsDir/Installers/kubectl.sh"
     "$linuxSettingsDir/Installers/kubent.sh"
     "$linuxSettingsDir/Installers/krew.sh"
