@@ -14,11 +14,15 @@ scripts=(
 
     "$settingsDir/Linux/Installers/pwsh.sh"
 
+    "$settingsDir/Linux/Installers/docker.sh"
+
     "$settingsDir/Linux/Installers/kubectl.sh"
     "$settingsDir/Linux/Installers/kubent.sh"
     "$settingsDir/Linux/Installers/krew.sh"
     "$settingsDir/Linux/Installers/kubectx.sh"
     "$settingsDir/Linux/Installers/helm.sh"
+
+    "$settingsDir/Linux/Installers/kind.sh"
 )
 
 # Map path for profile sharing
