@@ -95,3 +95,5 @@
 	repo = C:/workspaces/OV3
 	repo = C:/workspaces/OV4
 	repo = C:/workspaces/RoomClientImaging/RcImages
+[checkout]
+	defaultRemote = origin
