@@ -1,6 +1,6 @@
 
 function InstallKeyboard {
-    
+
     ./CustomDvorak/setup.exe
 
     Write-Output "Installed Custom Keyboard"
@@ -14,7 +14,7 @@ function CreateRegistryKeyIfNotExists($registryPath)
         $lastSlashIndex = $registryPath.LastIndexOf("\")
         $parentPath = $registryPath.Substring(0, $lastSlashIndex)
         CreateRegistryKeyIfNotExists $parentPath
-        
+
         Write-Output "Creating $registryPath"
         New-Item -Path $registryPath
     }
@@ -139,10 +139,9 @@ function InstallGit(){
 iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 
 choco install googlechrome -y
-#choco install notepadplusplus -y
 choco install visualstudiocode -y
 #choco install spotify -y
-choco install authy-desktop -y
+choco install ente-auth -y
 choco install powertoys -y
 
 InstallGit
