@@ -161,7 +161,6 @@ $password = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwordSecure))
 
 InstallAutoHotKey($password)
-InstallWinSplit($password)
 
 function InstallWindowsTerminal(){
   choco install microsoft-windows-terminal -y
