@@ -23,6 +23,7 @@ scripts=(
     "$settingsDir/Linux/Installers/helm.sh"
 
     "$settingsDir/Linux/Installers/kind.sh"
+    "$settingsDir/Linux/Installers/az.sh"
 )
 
 # Map path for profile sharing
