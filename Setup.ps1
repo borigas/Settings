@@ -140,7 +140,7 @@ iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.p
 
 choco install googlechrome -y
 choco install visualstudiocode -y
-#choco install spotify -y
+choco install spotify -y
 choco install ente-auth -y
 choco install powertoys -y
 
