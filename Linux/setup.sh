@@ -13,6 +13,7 @@ scripts=(
     "$settingsDir/Linux/Installers/OhMyZsh.sh"
 
     "$settingsDir/Linux/Installers/pwsh.sh"
+    "$settingsDir/Linux/Installers/AzPowershell.sh"
 
     "$settingsDir/Linux/Installers/docker.sh"
 
