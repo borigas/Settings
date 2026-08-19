@@ -274,7 +274,7 @@ foreach($path in $pathPriorities)
 	if(Test-Path $path)
 	{
 		# Change directories only if we're in the default dir
-		if($isDefaultLocation)
+		if($isDefaultLocation -and $env:TERM_PROGRAM -ne "vscode")
 		{
 			cd $path
 		}
